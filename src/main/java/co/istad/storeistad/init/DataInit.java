@@ -396,23 +396,23 @@ public class DataInit {
 variationOptionRepository.saveAll(List.of(black,white,gray,blue,red,green,purple,yellow,pink,orange,brown,
         xs,s,m,l,xl,xxl,X3l,slim,regular,loose,under25,$25to$50,$50to$100,$100to$200,$200to$500,over$500));
 
-        // Product Management
-        ProductEntity menUaFastLeftChestTShirt = ProductEntity.builder()
-                .uuid(UUID.randomUUID().toString())
-                .name("Men's UA Fast Left Chest T-Shirt")
-                .description("Super-soft, cotton-blend fabric provides all-day comfort")
-                .image("https://underarmour.scene7.com/is/image/Underarmour/V5-1370954-011_FC?rp=standard-0pad%7CpdpMainDesktop&scl=1&fmt=jpg&qlt=85&resMode=sharp2&cache=on%2Con&bgc=F0F0F0&wid=566&hei=708&size=566%2C708")
-                .category(shirtsAndTops)
-                .build();
-
-        ProductEntity womanUaRivalFleeceOverSizedCrew = ProductEntity.builder()
-                .uuid(UUID.randomUUID().toString())
-                .name("Women's UA Rival Fleece OverSized Crew")
-                .description("Ultra-soft, mid-weight cotton-blend fleece with brushed interior for extra warmth")
-                .image("https://underarmour.scene7.com/is/image/Underarmour/V5-1379491-743_FC?rp=standard-0pad%7CpdpMainDesktop&scl=1&fmt=jpg&qlt=85&resMode=sharp2&cache=on%2Con&bgc=F0F0F0&wid=566&hei=708&size=566%2C708")
-                .category(shirtsAndTopsLadies)
-                .build();
-
-        productRepository.saveAll(List.of(menUaFastLeftChestTShirt,womanUaRivalFleeceOverSizedCrew));
+//        // Product Management
+//        ProductEntity menUaFastLeftChestTShirt = ProductEntity.builder()
+//                .uuid(UUID.randomUUID().toString())
+//                .name("Men's UA Fast Left Chest T-Shirt")
+//                .description("Super-soft, cotton-blend fabric provides all-day comfort")
+//                .image("https://underarmour.scene7.com/is/image/Underarmour/V5-1370954-011_FC?rp=standard-0pad%7CpdpMainDesktop&scl=1&fmt=jpg&qlt=85&resMode=sharp2&cache=on%2Con&bgc=F0F0F0&wid=566&hei=708&size=566%2C708")
+//                .category(shirtsAndTops)
+//                .build();
+//
+//        ProductEntity womanUaRivalFleeceOverSizedCrew = ProductEntity.builder()
+//                .uuid(UUID.randomUUID().toString())
+//                .name("Women's UA Rival Fleece OverSized Crew")
+//                .description("Ultra-soft, mid-weight cotton-blend fleece with brushed interior for extra warmth")
+//                .image("https://underarmour.scene7.com/is/image/Underarmour/V5-1379491-743_FC?rp=standard-0pad%7CpdpMainDesktop&scl=1&fmt=jpg&qlt=85&resMode=sharp2&cache=on%2Con&bgc=F0F0F0&wid=566&hei=708&size=566%2C708")
+//                .category(shirtsAndTopsLadies)
+//                .build();
+//
+//        productRepository.saveAll(List.of(menUaFastLeftChestTShirt,womanUaRivalFleeceOverSizedCrew));
     }
 }

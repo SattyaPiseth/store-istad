@@ -30,9 +30,9 @@ import java.util.Map;
 @RequestMapping("api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController extends BaseController {
-
     private final AuthService authService;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+
     @PostMapping("/login")
     public ResponseEntity<StructureRS> login(@Validated @RequestBody LoginRQ loginRQ) {
         return response(authService.login(loginRQ));

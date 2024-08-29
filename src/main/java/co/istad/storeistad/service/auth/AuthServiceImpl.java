@@ -42,8 +42,8 @@ import java.util.*;
  */
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class AuthServiceImpl extends BaseService implements AuthService {
 
     private final AuthenticationManager authenticationManager;
@@ -62,6 +62,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
 
     @Value("${app.api-version}")
     private String apiVersion;
+
     @Transactional
     @Override
     public StructureRS login(LoginRQ request) {
