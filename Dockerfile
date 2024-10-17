@@ -9,7 +9,7 @@ FROM gradle:jdk21 AS build
 WORKDIR /workspace
 COPY --chown=gradle:gradle . /workspace/
 
-RUN gradle clean build -x test
+RUN gradle clean build 
 
 FROM gradle:jdk21
 WORKDIR /workspace
