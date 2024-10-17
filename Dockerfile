@@ -1,20 +1,18 @@
- FROM openjdk:17-alpine
- RUN mkdir -p workspace
- COPY build/libs/store-istad-0.0.1.jar /workspace
- EXPOSE 8080
- ENTRYPOINT ["java","-jar","-Dspring.profiles.active=dev","/workspace/store-istad-0.0.1.jar"]
+ # FROM openjdk:17-alpine
+ # RUN mkdir -p workspace
+ # COPY build/libs/store-istad-0.0.1.jar /workspace
+ # EXPOSE 8080
+ # ENTRYPOINT ["java","-jar","-Dspring.profiles.active=dev","/workspace/store-istad-0.0.1.jar"]
 
 #--------------------------
+FROM gradle:jdk21 AS build
+WORKDIR /workspace
+COPY --chown=gradle:gradle . /workspace/
 
-## Stage 1: Build the application
-#FROM ghcr.io/graalvm/jdk-community:21 as build
-#WORKDIR /workspace
-#COPY . .
-#RUN gradle build -x test
-#
-## Stage 2: Run the application
-#FROM openjdk:17-alpine
-#WORKDIR /workspace
-#COPY --from=build /workspace/build/libs/store-istad-0.0.1.jar /workspace/store-istad-0.0.1.jar
-#EXPOSE 8080
-#ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=trigger", "/workspace/store-istad-0.0.1.jar"]
+RUN gradle clean build -x test
+
+FROM gradle:jdk21
+WORKDIR /workspace
+COPY --from=build /workspace/build/libs/*.jar /workspace/store-istad.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=stage", "store-istad.jar"]
