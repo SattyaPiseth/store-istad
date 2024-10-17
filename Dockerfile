@@ -7,7 +7,7 @@
 #--------------------------
 
 # Stage 1: Build the application
-FROM gradle:7.4.0-jdk17 as build
+FROM ghcr.io/graalvm/jdk-community:21 as build
 WORKDIR /workspace
 COPY . .
 RUN gradle build -x test
