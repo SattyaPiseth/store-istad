@@ -9,7 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class StoreIstadApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(StoreIstadApplication.class, args);
+//        SpringApplication.run(StoreIstadApplication.class, args);
+        for (int i = 0; i < 1000; i++) {
+            System.out.println("b sl o  jumauah jumauah");
+        }
     }
 
 }
