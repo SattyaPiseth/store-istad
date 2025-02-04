@@ -21,8 +21,8 @@ class SpringSecurityAuditorAware implements AuditorAware<UserEntity> {
     public Optional<UserEntity> getCurrentAuditor() {
         Authentication authToken = SecurityContextHolder.getContext().getAuthentication();
         Map<String, Object> attributes;
-        if (authToken instanceof JwtAuthenticationToken) {
-            attributes = ((JwtAuthenticationToken) authToken).getTokenAttributes();
+        if (authToken instanceof JwtAuthenticationToken jwtAuthenticationToken) {
+            attributes = jwtAuthenticationToken.getTokenAttributes();
             UserEntity user = new UserEntity();
 
             user.setId((Long) attributes.get("id"));

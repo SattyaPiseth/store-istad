@@ -92,7 +92,7 @@ public class SecurityConfig {
         return source;
     }
     @Bean
-    JwtAuthenticationProvider jwtAuthenticationProvider() throws JOSEException {
+    JwtAuthenticationProvider jwtAuthenticationProvider() {
         JwtAuthenticationProvider provider =
                 new JwtAuthenticationProvider(
                         jwtRefreshTokenDecoder());
@@ -107,21 +107,21 @@ public class SecurityConfig {
         return new ProviderManager(authenticationProvider);
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/users/change-password").authenticated()
-                        .requestMatchers("api/v1/files/download/**","file/**","swagger-ui/index.html","docs","/api/v1/vault/getDataFromVault").permitAll() // <--- This is required for the /download endpoint to work
-                        .anyRequest().authenticated())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .authenticationEntryPoint(restAuthenticationEntryPoint)
-                        .jwt(Customizer.withDefaults())
-                )
-                .build();
-    }
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+            return http
+                    .csrf(AbstractHttpConfigurer::disable)
+                    .authorizeHttpRequests(auth -> auth
+                            .requestMatchers("/api/v1/users/change-password").authenticated()
+                            .requestMatchers("/api/v1/files/download/**","/file/**","/swagger-ui/index.html","/docs","/api/v1/vault/getDataFromVault","/").permitAll() // <--- This is required for the /download endpoint to work
+                            .anyRequest().authenticated())
+                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    .oauth2ResourceServer(oauth2 -> oauth2
+                            .authenticationEntryPoint(restAuthenticationEntryPoint)
+                            .jwt(Customizer.withDefaults())
+                    )
+                    .build();
+        }
 
     /*
      * This will allow the /token endpoint to use basic auth and everything else uses the SFC above
