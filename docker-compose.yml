@@ -10,7 +10,7 @@ services:
     ports:
       - "15000:8888"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://store-istad-db:5432/store_istad
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://store-istad-db:6666/store_istad
       - SPRING_DATASOURCE_USERNAME=sb7
       - SPRING_DATASOURCE_PASSWORD=sb7@123
     networks:
