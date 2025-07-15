@@ -14,5 +14,5 @@ RUN gradle clean build
 FROM gradle:jdk21-ubi
 WORKDIR /workspace
 COPY --from=build /workspace/build/libs/*.jar /workspace/store-istad.jar
-EXPOSE 8080
+EXPOSE 8888
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=stage", "store-istad.jar"]
