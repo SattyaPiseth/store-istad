@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     container_name: store-istad-api
     ports:
-      - "15000:8888"
+      - "15000:8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://store-istad-db:5432/store_istad
       - SPRING_DATASOURCE_USERNAME=sb7
@@ -19,7 +19,7 @@ services:
     depends_on:
       - store-istad-db
     healthcheck:
-      test: [ "CMD-SHELL", "curl -f http://localhost:8888/actuator/health || exit 1" ]
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1" ]
       interval: 30s
       retries: 3
       start_period: 30s
