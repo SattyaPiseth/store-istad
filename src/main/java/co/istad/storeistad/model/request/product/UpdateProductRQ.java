@@ -1,5 +1,6 @@
 package co.istad.storeistad.model.request.product;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -22,4 +23,5 @@ public class UpdateProductRQ {
     private String description;
     @Positive(message = "Unit price must be greater than 0")
     private Integer categoryId;
+    private String image;
 }
