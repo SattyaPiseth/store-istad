@@ -3,6 +3,7 @@ version: '3.8'
 services:
   store-istad-api:
     image: "store-istad:latest"
+    restart: on-failure
     build:
       context: .
       dockerfile: Dockerfile
@@ -28,6 +29,7 @@ services:
 
   store-istad-db:
     image: postgres:latest
+    restart: on-failure
     container_name: store-istad-db
     ports:
       - "6666:5432"
