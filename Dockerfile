@@ -5,6 +5,7 @@
 #ENTRYPOINT ["java","-jar","-Dspring.profiles.active=dev","/workspace/store-istad-0.0.1.jar"]
 
 #--------------------------
+
 FROM gradle:jdk21-ubi AS build
 WORKDIR /workspace
 COPY --chown=gradle:gradle . /workspace/
