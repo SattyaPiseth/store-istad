@@ -1,4 +1,3 @@
-version: '3.8'
 # database PostgreSQL version
 services:
   store-istad-api:
