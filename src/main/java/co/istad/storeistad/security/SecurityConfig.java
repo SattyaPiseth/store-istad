@@ -3,7 +3,6 @@ package co.istad.storeistad.security;
 
 import co.istad.storeistad.config.property.RsaKeyProperties;
 import co.istad.storeistad.db.entity.UserEntity;
-import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -45,6 +44,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 /**
  * @author Sattya
  * create at 25/1/24 2:35 AM
@@ -71,10 +72,19 @@ public class SecurityConfig {
         return new SpringSecurityAuditorAware();
     }
 
+//    @Bean
+//    public InMemoryUserDetailsManager inMemoryUser() {
+//        return new InMemoryUserDetailsManager(User.withUsername(username).password("{noop}".concat(password)).roles("Admin").build());
+//    }
     @Bean
-    public InMemoryUserDetailsManager inMemoryUser() {
-        return new InMemoryUserDetailsManager(User.withUsername(username).password("{noop}".concat(password)).roles("Admin").build());
+    public InMemoryUserDetailsManager inMemoryUser(PasswordEncoder passwordEncoder) {
+        return new InMemoryUserDetailsManager(
+                User.withUsername(username)
+                        .password(passwordEncoder.encode(password))
+                        .roles("Admin")
+                        .build());
     }
+
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -87,17 +97,18 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(jwtConfigProperties.getAllowedOrigins());
         configuration.setAllowedMethods(jwtConfigProperties.getAllowedMethod());
         configuration.setAllowedHeaders(jwtConfigProperties.getAllowedHeader());
+        configuration.setAllowCredentials(true);
+        configuration.setExposedHeaders(List.of("Authorization", "Content-Disposition"));
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
     @Bean
     JwtAuthenticationProvider jwtAuthenticationProvider() {
-        JwtAuthenticationProvider provider =
-                new JwtAuthenticationProvider(
-                        jwtRefreshTokenDecoder());
-        return provider;
+        return new JwtAuthenticationProvider(jwtRefreshTokenDecoder());
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
@@ -126,19 +137,21 @@ public class SecurityConfig {
     /*
      * This will allow the /token endpoint to use basic auth and everything else uses the SFC above
      */
-    @Order(Ordered.HIGHEST_PRECEDENCE)
     @Bean
-    SecurityFilterChain tokenSecurityFilterChain(HttpSecurity http) throws Exception {
+    @Order(Ordered.HIGHEST_PRECEDENCE)
+    SecurityFilterChain tokenSecurityFilterChain(HttpSecurity http,
+                                                 InMemoryUserDetailsManager inMemoryUser) throws Exception {
         return http
-                .cors(Customizer.withDefaults()) // <--- This is required for the /token endpoint to work
+                .cors(Customizer.withDefaults())
                 .securityMatcher(new AntPathRequestMatcher("/api/v1/auth/**"))
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .userDetailsService(inMemoryUser())
+                .userDetailsService(inMemoryUser)
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(auth -> auth.authenticationEntryPoint(restAuthenticationEntryPoint))
                 .build();
     }
+
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return web -> web
