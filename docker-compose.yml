@@ -7,6 +7,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: store-istad-api
+    volumes:
+      - files-storage:/workspace/storage
     ports:
       - "15000:8888"
     environment:
@@ -51,6 +53,8 @@ services:
 
 volumes:
   store-istad-volume:
+  files-storage:
+
 
 networks:
   store-istad-network:
