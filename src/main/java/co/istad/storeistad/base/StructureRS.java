@@ -1,41 +1,39 @@
 package co.istad.storeistad.base;
 
+import co.istad.storeistad.constant.MessageConstant;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 @Data
-public class StructureRS<T> {
-    private int status;
-    private String message;
-    private String messageKey;
-    private T data;
+public class StructureRS {
+    private int status = HttpStatus.OK.value();
+    private String message = MessageConstant.SUCCESSFULLY;
+    private String messageKey = MessageConstant.SUCCESSFULLY.toLowerCase();
+    private Object data;
     private PagingRS paging;
 
-    public StructureRS() {}
+    public StructureRS() {
+    }
 
-    public StructureRS(T data) {
+    public <T> StructureRS(T data) {
         this.data = data;
     }
 
-    public StructureRS(T data, PagingRS paging) {
+    public <T> StructureRS(T data, PagingRS paging) {
         this.data = data;
         this.paging = paging;
     }
 
-    public StructureRS(HttpStatus status, String message) {
-        this.status = status.value();
+    public StructureRS(HttpStatus httpStatus, String message) {
+        this.status = httpStatus.value();
         this.message = message;
-        this.messageKey = generateMessageKey(message);
+        this.messageKey = message.replaceAll("\\s+", "_").toLowerCase();
     }
 
-    public StructureRS(HttpStatus status, String message, T data) {
+    public <T> StructureRS(HttpStatus status, String message, T data) {
         this.status = status.value();
         this.message = message;
-        this.messageKey = generateMessageKey(message);
+        this.messageKey = message.replaceAll("\\s+", "_").toLowerCase();
         this.data = data;
     }
-    private String generateMessageKey(String message) {
-        return message == null ? "" : message.replaceAll("\\s+", "_").toLowerCase();
-    }
-
 }
