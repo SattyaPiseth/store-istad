@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -289,31 +290,31 @@ public class ExceptionAdvices {
         return new ResponseEntity<>(structureRS, HttpStatus.TEMPORARY_REDIRECT);
     }
 
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(NoResourceFoundException.class)
-//    public ResponseEntity<StructureRS> handleNoResourceFound(NoResourceFoundException ex) {
-//        final String path = ex.getMessage();
-//
-//        if (path != null && path.contains("favicon.ico")) {
-//            // Optional: log at debug level instead of error
-//            log.debug("Favicon not found: {}", path);
-//
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                    .body(StructureRS.builder()
-//                            .status(HttpStatus.NOT_FOUND.value())
-//                            .message("Favicon not found (ignored).")
-//                            .data(null)
-//                            .build());
-//        }
-//
-//        log.warn("Static resource not found: {}", path);
-//
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                .body(StructureRS.builder()
-//                        .status(HttpStatus.BAD_REQUEST.value())
-//                        .message("Requested static resource not found.")
-//                        .data(path)
-//                        .build());
-//    }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<StructureRS<String>> handleNoResourceFound(NoResourceFoundException ex) {
+        final String path = ex.getMessage();
+
+        if (path != null && path.contains("favicon.ico")) {
+            // Optional: log at debug level instead of error
+            log.debug("Favicon not found: {}", path);
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(StructureRS.<String>builder()
+                            .status(HttpStatus.NOT_FOUND.value())
+                            .message("Favicon not found (ignored).")
+                            .data(null)
+                            .build());
+        }
+
+        log.warn("Static resource not found: {}", path);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(StructureRS.<String>builder()
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .message("Requested static resource not found.")
+                        .data(path)
+                        .build());
+    }
 
 }
