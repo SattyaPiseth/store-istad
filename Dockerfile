@@ -24,7 +24,7 @@
 
 # NEW VERSION
 # Build stage: use Gradle 8.1 with JDK 21
-FROM gradle:8.3.1-jdk21 AS build
+FROM gradle:ubi-minimal AS build
 
 WORKDIR /workspace
 COPY --chown=gradle:gradle . /workspace/
@@ -32,7 +32,7 @@ COPY --chown=gradle:gradle . /workspace/
 RUN gradle clean build --no-daemon
 
 # Run stage: use lightweight JRE 21 runtime
-FROM eclipse-temurin:21-jre
+FROM gradle:ubi-minimal
 
 WORKDIR /workspace
 COPY --from=build /workspace/build/libs/*.jar /workspace/store-istad.jar
