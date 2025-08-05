@@ -12,7 +12,7 @@ FROM gradle:jdk21-ubi AS build
 WORKDIR /workspace
 COPY --chown=gradle:gradle . /workspace/
 
-RUN gradle clean build
+RUN gradle clean build --stacktrace --info --no-daemon
 
 FROM gradle:jdk21-ubi
 WORKDIR /workspace
