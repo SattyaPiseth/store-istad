@@ -6,14 +6,36 @@
 
 #--------------------------
 
-FROM gradle:jdk21-ubi AS build
+# OLD VERSION
+
+#FROM gradle:jdk21-ubi AS build
+#WORKDIR /workspace
+#COPY --chown=gradle:gradle . /workspace/
+#
+#RUN gradle clean build
+#
+#FROM gradle:jdk21-ubi
+#WORKDIR /workspace
+#COPY --from=build /workspace/build/libs/*.jar /workspace/store-istad.jar
+#EXPOSE 8888
+#ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=stage", "store-istad.jar"]
+
+#--------------------------
+
+# NEW VERSION
+# Build stage: use Gradle 8.1 with JDK 21
+FROM gradle:8.1-jdk21 AS build
+
 WORKDIR /workspace
 COPY --chown=gradle:gradle . /workspace/
 
-RUN gradle clean build
+RUN gradle clean build --no-daemon
 
-FROM gradle:jdk21-ubi
+# Run stage: use lightweight JRE 21 runtime
+FROM eclipse-temurin:21-jre
+
 WORKDIR /workspace
 COPY --from=build /workspace/build/libs/*.jar /workspace/store-istad.jar
+
 EXPOSE 8888
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=stage", "store-istad.jar"]
