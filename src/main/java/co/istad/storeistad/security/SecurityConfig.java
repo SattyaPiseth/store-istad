@@ -124,7 +124,11 @@ public class SecurityConfig {
                     .csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/api/v1/users/change-password").authenticated()
-                            .requestMatchers("/api/v1/files/download/**","/file/**","/swagger-ui/index.html","/docs","/api/v1/vault/getDataFromVault","/","/actuator/**").permitAll() // <--- This is required for the /download endpoint to work
+                            .requestMatchers("/api/v1/files/download/**",
+                                    "/file/**","/swagger-ui/index.html",
+                                    "/docs","/api/v1/vault/getDataFromVault",
+                                    "/","/actuator/**").permitAll() // <--- This is required for the /download endpoint to work
+                            .requestMatchers("/favicon.ico").permitAll()
                             .anyRequest().authenticated())
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                     .oauth2ResourceServer(oauth2 -> oauth2
