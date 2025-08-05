@@ -8,13 +8,13 @@
 
 # OLD VERSION
 
-FROM gradle:jdk21-ubi AS build
+FROM gradle:8.5-jdk21 AS build
 WORKDIR /workspace
 COPY --chown=gradle:gradle . /workspace/
 
 RUN gradle clean build --stacktrace --info --no-daemon
 
-FROM gradle:jdk21-ubi
+FROM gradle:8.5-jdk21
 WORKDIR /workspace
 COPY --from=build /workspace/build/libs/*.jar /workspace/store-istad.jar
 EXPOSE 8888
