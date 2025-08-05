@@ -1,29 +1,26 @@
 package co.istad.storeistad.base;
 
-import co.istad.storeistad.constant.MessageConstant;
-import lombok.*;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Data
 public class StructureRS<T> {
-
-    @Builder.Default
-    private int status = HttpStatus.OK.value();
-
-    @Builder.Default
-    private String message = MessageConstant.SUCCESSFULLY;
-
-    @Builder.Default
-    private String messageKey = MessageConstant.SUCCESSFULLY.toLowerCase();
-
+    private int status;
+    private String message;
+    private String messageKey;
     private T data;
-
     private PagingRS paging;
+
+    public StructureRS() {}
+
+    public StructureRS(T data) {
+        this.data = data;
+    }
+
+    public StructureRS(T data, PagingRS paging) {
+        this.data = data;
+        this.paging = paging;
+    }
 
     public StructureRS(HttpStatus status, String message) {
         this.status = status.value();
@@ -37,8 +34,8 @@ public class StructureRS<T> {
         this.messageKey = generateMessageKey(message);
         this.data = data;
     }
-
     private String generateMessageKey(String message) {
         return message == null ? "" : message.replaceAll("\\s+", "_").toLowerCase();
     }
+
 }
