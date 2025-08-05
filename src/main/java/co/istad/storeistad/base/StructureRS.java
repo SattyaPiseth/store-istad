@@ -1,12 +1,10 @@
 package co.istad.storeistad.base;
 
 import co.istad.storeistad.constant.MessageConstant;
-import lombok.Builder;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 @Data
-@Builder
 public class StructureRS {
     private int status = HttpStatus.OK.value();
     private String message = MessageConstant.SUCCESSFULLY;
