@@ -24,7 +24,7 @@
 
 # NEW VERSION
 # Build stage: use Gradle 8.1 with JDK 21
-FROM gradle:8.1-jdk21 AS build
+FROM gradle:8.3.1-jdk21 AS build
 
 WORKDIR /workspace
 COPY --chown=gradle:gradle . /workspace/
