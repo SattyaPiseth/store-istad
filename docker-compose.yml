@@ -19,7 +19,8 @@ services:
       - store-istad-network
     #    restart: always
     depends_on:
-      - store-istad-db
+      store-istad-db:
+        condition: service_healthy
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://localhost:8888/actuator/health || exit 1" ]
       interval: 30s
