@@ -22,7 +22,7 @@ public class DataInit {
     private final ProductRepository productRepository;
     private final PasswordEncoder passwordEncoder;
 
-//    @PostConstruct
+    @PostConstruct
     public void init(){
 
         // Staff-Authorities-Management
