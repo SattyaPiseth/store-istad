@@ -241,6 +241,7 @@ public class AuthServiceImpl extends BaseService implements AuthService {
         return mail;
     }
 
+
     private Mail<String> createVerificationEmail(String recipient, String metaData,String template) {
         Mail<String> mail = new Mail<>();
         mail.setSubject("Email Verification");
