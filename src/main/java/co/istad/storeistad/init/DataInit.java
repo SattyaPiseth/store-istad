@@ -22,8 +22,6 @@ public class DataInit {
     private final ProductRepository productRepository;
     private final PasswordEncoder passwordEncoder;
 
-
-
     @PostConstruct
     public void init(){
 
