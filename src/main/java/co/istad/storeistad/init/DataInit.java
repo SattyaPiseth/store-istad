@@ -23,6 +23,7 @@ public class DataInit {
     private final PasswordEncoder passwordEncoder;
 
 
+
     @PostConstruct
     public void init(){
 
