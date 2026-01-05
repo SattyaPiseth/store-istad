@@ -18,7 +18,7 @@ FROM gradle:8.5-jdk21
 WORKDIR /workspace
 COPY --from=build /workspace/build/libs/*.jar /workspace/store-istad.jar
 #EXPOSE 8888
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=stage", "store-istad.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=dev", "store-istad.jar"]
 
 #--------------------------
 
