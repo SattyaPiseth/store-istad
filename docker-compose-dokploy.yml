@@ -1,0 +1,76 @@
+version: "3.9"
+
+services:
+  java-app:
+    image: "store-istad:latest"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: store-istad-api
+    restart: unless-stopped
+
+    volumes:
+      - "/data-storage/files-storage:/workspace/storage"  # ⚠️ FIX path (see below)
+
+    ports:
+      - "15000:8080"
+
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://store-istad-db:5432/store_istad
+      - SPRING_DATASOURCE_USERNAME=sb7
+      - SPRING_DATASOURCE_PASSWORD=sb7@123
+      - FILE_SERVER_PATH=/workspace/storage/
+      - FILE_BASE_URI=http://localhost:15000/file/
+      - FILE_DOWNLOAD_URI=http://localhost:15000/api/v1/files/download/
+
+    networks:
+      - store-istad-network
+
+    depends_on:
+      store-istad-db:
+        condition: service_healthy
+
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1" ]
+      interval: 30s
+      retries: 3
+      start_period: 30s
+      timeout: 10s
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.java-app.rule=Host(`cio-java-03b8bc-96-9-84-190.traefik.me`)"
+      - "traefik.http.services.java-app.loadbalancer.server.port=8080"
+
+  store-istad-db:
+    image: postgres:17
+    container_name: store-istad-db
+    restart: unless-stopped
+
+    ports:
+      - "6666:5432"
+
+    environment:
+      - POSTGRES_USER=sb7
+      - POSTGRES_PASSWORD=sb7@123
+      - POSTGRES_DB=store_istad
+
+    volumes:
+      - store-istad-volume:/var/lib/postgresql/data
+
+    networks:
+      - store-istad-network
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB" ]
+      interval: 30s
+      retries: 3
+      start_period: 90s
+      timeout: 10s
+
+volumes:
+  store-istad-volume:
+
+networks:
+  store-istad-network:
+    driver: bridge
